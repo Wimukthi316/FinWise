@@ -116,7 +116,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Budget Progress Card -->
+            <!-- Budget Progress Card with Circular Progress -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,44 +146,52 @@
                         android:textColor="#757575"
                         android:textSize="14sp" />
 
-                    <LinearLayout
+                    <!-- Main circular progress bar for overall budget -->
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="16dp">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Current Progress"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/tvBudgetProgress"
+                        <com.google.android.material.progressindicator.CircularProgressIndicator
+                            android:id="@+id/progressBudget"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$0 / $0"
-                            android:textColor="@color/green"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                            android:layout_gravity="center"
+                            android:progress="0"
+                            app:indicatorSize="200dp"
+                            app:indicatorColor="@color/green"
+                            app:trackColor="#E0E0E0"
+                            app:trackThickness="12dp" />
 
-                    <ProgressBar
-                        android:id="@+id/progressBudget"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="12dp"
-                        android:layout_marginTop="8dp"
-                        android:progress="0"
-                        android:progressBackgroundTint="#E0E0E0"
-                        android:progressTint="@color/green" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvBudgetProgress"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="$0 / $0"
+                                android:textColor="@color/green"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvBudgetPercentage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0%"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+                    </FrameLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Category Chart Card -->
+            <!-- Category Chart Card with Circular Progress -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -213,196 +221,118 @@
                         android:textColor="#757575"
                         android:textSize="14sp" />
 
-                    <!-- Category items with progress bars -->
+                    <!-- Circular progress indicators for each category -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="16dp">
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-                        <!-- Food category -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Food"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-
+                        <!-- Food category circular progress -->
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center_vertical">
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                            <ProgressBar
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
                                 android:id="@+id/progressFood"
-                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="0dp"
-                                android:layout_height="12dp"
-                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:progress="65"
-                                android:progressBackgroundTint="#E0E0E0"
-                                android:progressTint="#FF5722" />
+                                app:indicatorSize="80dp"
+                                app:indicatorColor="#FF5722"
+                                app:trackColor="#E0E0E0"
+                                app:trackThickness="8dp" />
 
                             <TextView
-                                android:id="@+id/tvFoodAmount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="$0"
+                                android:layout_marginTop="8dp"
+                                android:text="Food"
                                 android:textColor="@color/black"
-                                android:textSize="14sp"
-                                android:layout_marginStart="8dp" />
+                                android:textSize="14sp" />
 
-                            <TextView
-                                android:id="@+id/tvFoodBudget"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="/ $0"
-                                android:textColor="#757575"
-                                android:textSize="14sp"
-                                android:layout_marginStart="4dp" />
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tvFoodAmount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="$0"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/tvFoodBudget"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="/ $0"
+                                    android:textColor="#757575"
+                                    android:textSize="12sp"
+                                    android:layout_marginStart="4dp" />
+                            </LinearLayout>
                         </LinearLayout>
 
-                        <!-- Transportation category -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Transportation"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            android:layout_marginTop="16dp" />
-
+                        <!-- Shopping category circular progress -->
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center_vertical">
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                            <ProgressBar
-                                android:id="@+id/progressTransportation"
-                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="0dp"
-                                android:layout_height="12dp"
-                                android:layout_weight="1"
-                                android:progress="40"
-                                android:progressBackgroundTint="#E0E0E0"
-                                android:progressTint="#2196F3" />
-
-                            <TextView
-                                android:id="@+id/tvTransportationAmount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="$0"
-                                android:textColor="@color/black"
-                                android:textSize="14sp"
-                                android:layout_marginStart="8dp" />
-
-                            <TextView
-                                android:id="@+id/tvTransportationBudget"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="/ $0"
-                                android:textColor="#757575"
-                                android:textSize="14sp"
-                                android:layout_marginStart="4dp" />
-                        </LinearLayout>
-
-                        <!-- Shopping category -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Shopping"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            android:layout_marginTop="16dp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center_vertical">
-
-                            <ProgressBar
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
                                 android:id="@+id/progressShopping"
-                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="0dp"
-                                android:layout_height="12dp"
-                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:progress="25"
-                                android:progressBackgroundTint="#E0E0E0"
-                                android:progressTint="#4CAF50" />
+                                app:indicatorSize="80dp"
+                                app:indicatorColor="#4CAF50"
+                                app:trackColor="#E0E0E0"
+                                app:trackThickness="8dp" />
 
                             <TextView
-                                android:id="@+id/tvShoppingAmount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="$0"
+                                android:layout_marginTop="8dp"
+                                android:text="Shopping"
                                 android:textColor="@color/black"
-                                android:textSize="14sp"
-                                android:layout_marginStart="8dp" />
+                                android:textSize="14sp" />
 
-                            <TextView
-                                android:id="@+id/tvShoppingBudget"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="/ $0"
-                                android:textColor="#757575"
-                                android:textSize="14sp"
-                                android:layout_marginStart="4dp" />
-                        </LinearLayout>
+                                android:orientation="horizontal">
 
-                        <!-- Entertainment category -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Entertainment"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            android:layout_marginTop="16dp" />
+                                <TextView
+                                    android:id="@+id/tvShoppingAmount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="$0"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center_vertical">
-
-                            <ProgressBar
-                                android:id="@+id/progressEntertainment"
-                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                android:layout_width="0dp"
-                                android:layout_height="12dp"
-                                android:layout_weight="1"
-                                android:progress="15"
-                                android:progressBackgroundTint="#E0E0E0"
-                                android:progressTint="#9C27B0" />
-
-                            <TextView
-                                android:id="@+id/tvEntertainmentAmount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="$0"
-                                android:textColor="@color/black"
-                                android:textSize="14sp"
-                                android:layout_marginStart="8dp" />
-
-                            <TextView
-                                android:id="@+id/tvEntertainmentBudget"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="/ $0"
-                                android:textColor="#757575"
-                                android:textSize="14sp"
-                                android:layout_marginStart="4dp" />
+                                <TextView
+                                    android:id="@+id/tvShoppingBudget"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="/ $0"
+                                    android:textColor="#757575"
+                                    android:textSize="12sp"
+                                    android:layout_marginStart="4dp" />
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Category Budget Setting -->
+            <!-- Category Budget Setting (Keep this section unchanged for setting budgets) -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -448,21 +378,6 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilTransportationBudget"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="Transportation"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etTransportationBudget"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="numberDecimal" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilShoppingBudget"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -472,21 +387,6 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etShoppingBudget"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="numberDecimal" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilEntertainmentBudget"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="Entertainment"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etEntertainmentBudget"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal" />

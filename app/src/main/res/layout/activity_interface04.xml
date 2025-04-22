@@ -7,88 +7,98 @@
     android:background="@color/white"
     tools:context=".Interface04">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="24dp">
+        android:padding="24dp">
 
-        <!-- Header Section -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <!-- Back Button -->
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back button"
+            android:padding="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_arrow_back_24"
+            app:tint="@color/black" />
 
-            <ImageView
-                android:id="@+id/backButton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="24dp"
-                android:padding="4dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Back button"
-                app:srcCompat="@drawable/baseline_arrow_back_24"
-                app:tint="@color/black" />
+        <!-- App Logo -->
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_account_balance_24"
+            app:tint="@color/green" />
 
-            <TextView
-                android:id="@+id/titleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="70dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Create Account"
-                android:textColor="@color/black"
-                android:textSize="32sp"
-                android:textStyle="bold" />
+        <!-- App Name -->
+        <TextView
+            android:id="@+id/appNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/app_name"
+            android:textColor="@color/green"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appLogo" />
 
-            <ImageView
-                android:id="@+id/appLogo"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_below="@id/titleText"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                app:tint="@color/green"
-                app:srcCompat="@drawable/baseline_account_balance_24" />
-
-            <TextView
-                android:id="@+id/appNameText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/appLogo"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="@string/app_name"
-                android:textColor="@color/green"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
+        <!-- Title -->
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Create Account"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appNameText" />
 
         <!-- Welcome message -->
         <TextView
             android:id="@+id/welcomeMessage"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="Start tracking your finances with FinWise. Your budget journey begins here!"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleText"
+            app:layout_constraintWidth_percent="0.85" />
 
         <!-- Username Field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/usernameInputLayout"
-            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="48dp"
             app:boxStrokeColor="@color/green"
             app:hintTextColor="@color/green"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/welcomeMessage"
+            app:layout_constraintWidth_percent="0.9"
+            app:startIconDrawable="@drawable/baseline_person_24"
+            app:startIconTint="@color/green">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/usernameInput"
@@ -97,20 +107,25 @@
                 android:hint="Username"
                 android:inputType="text"
                 android:maxLines="1"
-                android:drawableStart="@drawable/baseline_person_24"
-                android:drawablePadding="16dp"
-                android:drawableTint="@color/green" />
+                android:paddingVertical="16dp"
+                android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Email Field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailInputLayout"
-            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:boxStrokeColor="@color/green"
             app:hintTextColor="@color/green"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/usernameInputLayout"
+            app:layout_constraintWidth_percent="0.9"
+            app:startIconDrawable="@drawable/baseline_email_24"
+            app:startIconTint="@color/green">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailInput"
@@ -119,22 +134,27 @@
                 android:hint="Email Address"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:drawableStart="@drawable/baseline_email_24"
-                android:drawablePadding="12dp"
-                android:drawableTint="@color/green" />
+                android:paddingVertical="16dp"
+                android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password Field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordInputLayout"
-            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:boxStrokeColor="@color/green"
             app:hintTextColor="@color/green"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/emailInputLayout"
+            app:layout_constraintWidth_percent="0.9"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/green"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:startIconDrawable="@drawable/baseline_password_24"
+            app:startIconTint="@color/green">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordInput"
@@ -143,22 +163,27 @@
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:drawableStart="@drawable/baseline_password_24"
-                android:drawablePadding="12dp"
-                android:drawableTint="@color/green" />
+                android:paddingVertical="16dp"
+                android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Confirm Password Field -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/confirmPasswordInputLayout"
-            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:boxStrokeColor="@color/green"
             app:hintTextColor="@color/green"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/passwordInputLayout"
+            app:layout_constraintWidth_percent="0.9"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/green"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:startIconDrawable="@drawable/baseline_password_24"
+            app:startIconTint="@color/green">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/confirmPasswordInput"
@@ -167,33 +192,41 @@
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:drawableStart="@drawable/baseline_password_24"
-                android:drawablePadding="12dp"
-                android:drawableTint="@color/green" />
+                android:paddingVertical="16dp"
+                android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Create Account Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/createAccountButton"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
             android:layout_marginTop="40dp"
+            android:backgroundTint="@color/green"
             android:fontFamily="sans-serif-medium"
             android:text="CREATE ACCOUNT"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:cornerRadius="8dp"
-            android:backgroundTint="@color/green" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/confirmPasswordInputLayout"
+            app:layout_constraintWidth_percent="0.9" />
 
-        <!-- Login Link -->
+        <!-- Login Link Container -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/loginContainer"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="32dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/createAccountButton">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -206,14 +239,15 @@
                 android:id="@+id/loginLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login"
-                android:textColor="@color/green"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="4dp" />
+                android:padding="4dp"
+                android:text="@string/login"
+                android:textColor="@color/green"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
-    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

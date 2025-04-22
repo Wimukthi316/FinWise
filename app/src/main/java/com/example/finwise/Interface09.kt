@@ -107,17 +107,23 @@ class Interface09 : AppCompatActivity() {
         val monthlyBudget = preferenceManager.getMonthlyBudget()
         val totalExpenses = preferenceManager.getTotalExpenses()
 
+        // Calculate percentage for overall budget
+        val budgetPercentage = if (monthlyBudget > 0) {
+            ((totalExpenses / monthlyBudget) * 100).toInt().coerceAtMost(100)
+        } else 0
+
         binding.apply {
             etBudget.setText(if (monthlyBudget > 0) monthlyBudget.toString() else "")
-            etFoodBudget.setText(preferenceManager.getCategoryBudget("food").toString())
-            etTransportationBudget.setText(preferenceManager.getCategoryBudget("transportation").toString())
-            etShoppingBudget.setText(preferenceManager.getCategoryBudget("shopping").toString())
-            etEntertainmentBudget.setText(preferenceManager.getCategoryBudget("entertainment").toString())
+            etFoodBudget.setText(if (preferenceManager.getCategoryBudget("food") > 0)
+                preferenceManager.getCategoryBudget("food").toString() else "")
+            etShoppingBudget.setText(if (preferenceManager.getCategoryBudget("shopping") > 0)
+                preferenceManager.getCategoryBudget("shopping").toString() else "")
 
             tvBudgetProgress.text = "${currency.format(totalExpenses)} / ${currency.format(monthlyBudget)}"
-            progressBudget.progress = if (monthlyBudget > 0) {
-                ((totalExpenses / monthlyBudget) * 100).toInt().coerceAtMost(100)
-            } else 0
+            tvBudgetPercentage.text = "$budgetPercentage%"
+
+            // Set circular progress for main budget
+            progressBudget.progress = budgetPercentage
         }
         updateCategoryBreakdown()
     }
@@ -126,18 +132,21 @@ class Interface09 : AppCompatActivity() {
         val currency = NumberFormat.getCurrencyInstance(Locale.US)
         val total = preferenceManager.getTotalExpenses().takeIf { it > 0 } ?: 1.0
 
-        listOf("food", "transportation", "shopping", "entertainment").forEach { category ->
+        listOf("food", "shopping").forEach { category ->
             val expenses = preferenceManager.getCategoryExpenses(category)
             val budget = preferenceManager.getCategoryBudget(category)
 
-            binding.getProgressView(category)?.progress = if (budget > 0) {
+            // Calculate percentage for circular progress indicators
+            val percentage = if (budget > 0) {
                 ((expenses / budget) * 100).toInt().coerceAtMost(100)
             } else {
                 ((expenses / total) * 100).toInt().coerceAtMost(100)
             }
 
+            // Set values for circular progress indicators
+            binding.getProgressView(category)?.progress = percentage
             binding.getAmountTextView(category)?.text = currency.format(expenses)
-            binding.getBudgetTextView(category)?.text = currency.format(budget)
+            binding.getBudgetTextView(category)?.text = "/ ${currency.format(budget)}"
         }
     }
 
@@ -179,86 +188,79 @@ class Interface09 : AppCompatActivity() {
         NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_warning)
             .setContentTitle("Budget ${if (percentage >= 100) "Exceeded" else "Reached"}!")
-            .setContentText("${currency.format(expenses)} (${percentage}%) of ${currency.format(budget)}")
+            .setContentText("${currency.format(expenses)} (${percentage}%) of ${currency.format(budget)} budget has been spent.")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setAutoCancel(true)
-            .build()
-            .also { notification ->
-                (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
-                    .notify(NOTIFICATION_ID, notification)
+            .build().also {
+                val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.notify(NOTIFICATION_ID, it)
             }
     }
 
     private fun saveMonthlyBudget() {
-        binding.etBudget.text.toString().takeIf { it.isNotEmpty() }?.let { budgetText ->
-            try {
+        try {
+            val budgetText = binding.etBudget.text.toString()
+            if (budgetText.isNotEmpty()) {
                 val budget = budgetText.toDouble()
-                if (budget <= 0) {
-                    binding.tilBudget.error = "Budget must be greater than 0"
-                    return
-                }
                 preferenceManager.saveMonthlyBudget(budget)
-                binding.tilBudget.error = null
-                Toast.makeText(this, "Budget set", Toast.LENGTH_SHORT).show()
-                notificationShown = false
+                Toast.makeText(this, "Monthly budget set successfully", Toast.LENGTH_SHORT).show()
                 loadBudgetData()
                 checkBudgetExceeded()
-            } catch (e: NumberFormatException) {
-                binding.tilBudget.error = "Invalid amount"
+            } else {
+                Toast.makeText(this, "Please enter a valid budget amount", Toast.LENGTH_SHORT).show()
             }
-        } ?: run { binding.tilBudget.error = "Required" }
+        } catch (e: NumberFormatException) {
+            Toast.makeText(this, "Please enter a valid number", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun saveCategoryBudgets() {
         try {
-            listOf("food", "transportation", "shopping", "entertainment").forEach { category ->
-                binding.getBudgetEditText(category)?.text?.toString()?.takeIf { it.isNotEmpty() }?.let { budgetText ->
-                    val budget = budgetText.toDouble()
-                    if (budget < 0) {
-                        Toast.makeText(this, "$category budget must be positive", Toast.LENGTH_SHORT).show()
-                        return
+            val categories = mapOf(
+                "food" to binding.etFoodBudget.text.toString(),
+                "shopping" to binding.etShoppingBudget.text.toString()
+            )
+
+            var success = true
+            categories.forEach { (category, valueText) ->
+                if (valueText.isNotEmpty()) {
+                    try {
+                        val budget = valueText.toDouble()
+                        preferenceManager.saveCategoryBudget(category, budget)
+                    } catch (e: NumberFormatException) {
+                        success = false
                     }
-                    preferenceManager.saveCategoryBudget(category, budget)
                 }
             }
-            Toast.makeText(this, "Category budgets saved", Toast.LENGTH_SHORT).show()
-            loadBudgetData()
-        } catch (e: NumberFormatException) {
-            Toast.makeText(this, "Invalid budget format", Toast.LENGTH_SHORT).show()
+
+            if (success) {
+                Toast.makeText(this, "Category budgets saved successfully", Toast.LENGTH_SHORT).show()
+                loadBudgetData()
+            } else {
+                Toast.makeText(this, "Please enter valid numbers for all categories", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error saving category budgets", Toast.LENGTH_SHORT).show()
         }
     }
 
-    // Extension functions for view binding
-    private fun ActivityInterface09Binding.getBudgetEditText(category: String) = when (category) {
-        "food" -> etFoodBudget
-        "transportation" -> etTransportationBudget
-        "shopping" -> etShoppingBudget
-        "entertainment" -> etEntertainmentBudget
-        else -> null
-    }
-
-    private fun ActivityInterface09Binding.getProgressView(category: String) = when (category) {
+    // Extension functions to access views based on category name
+    private fun ActivityInterface09Binding.getProgressView(category: String) = when(category) {
         "food" -> progressFood
-        "transportation" -> progressTransportation
         "shopping" -> progressShopping
-        "entertainment" -> progressEntertainment
         else -> null
     }
 
-    private fun ActivityInterface09Binding.getAmountTextView(category: String) = when (category) {
+    private fun ActivityInterface09Binding.getAmountTextView(category: String) = when(category) {
         "food" -> tvFoodAmount
-        "transportation" -> tvTransportationAmount
         "shopping" -> tvShoppingAmount
-        "entertainment" -> tvEntertainmentAmount
         else -> null
     }
 
-    private fun ActivityInterface09Binding.getBudgetTextView(category: String) = when (category) {
+    private fun ActivityInterface09Binding.getBudgetTextView(category: String) = when(category) {
         "food" -> tvFoodBudget
-        "transportation" -> tvTransportationBudget
         "shopping" -> tvShoppingBudget
-        "entertainment" -> tvEntertainmentBudget
         else -> null
     }
 }
