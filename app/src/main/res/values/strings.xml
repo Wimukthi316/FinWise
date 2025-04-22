@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">FinWise</string>
+
+    <!-- Common Strings -->
+    <string name="login">Login</string>
+    <string name="next">N E X T</string>
+
+    <!-- Screen02 -->
+    <string name="welcome">Welcome</string>
+
+
+</resources>
